@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تولد مبارک - انیمیشن سه بعدی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%); /* آسمان آبی روشن */
+            overflow: hidden;
+            font-family: 'Fredoka One', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- بادکنک‌های پس‌زمینه --- */
+        .balloon-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 50px;
+            background: red;
+            border-radius: 50%;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1), inset 5px 5px 10px rgba(255,255,255,0.3);
+            animation: floatUp linear infinite;
+        }
+
+        .balloon::after { /* نخ بادکنک */
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 15px;
+            background: rgba(255,255,255,0.6);
+        }
+
+        /* --- کیک سه بعدی (Clay Style) --- */
+        .cake-container {
+            position: relative;
+            z-index: 10;
+            transform: translateY(50px);
+            animation: cakePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* افکت جهش */
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
+        .plate {
+            width: 250px;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .layer {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            box-shadow: inset -10px 0 20px rgba(0,0,0,0.1); /* سایه خمیری */
+        }
+
+        .layer-bottom {
+            bottom: 0;
+            width: 200px;
+            height: 80px;
+            background: #ff9a9e;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .layer-middle {
+            bottom: 80px;
+            width: 200px;
+            height: 20px;
+            background: #fff; /* خامه وسط */
+            border-radius: 5px;
+            z-index: 2;
+        }
+
+        .layer-top {
+            bottom: 90px;
+            width: 180px;
+            height: 70px;
+            background: #ff9a9e;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 1;
+        }
+
+        .frosting {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 190px;
+            height: 30px;
+            background: #fad0c4;
+            border-radius: 20px;
+            z-index: 3;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+        }
+
+        /* شمع‌ها */
+        .candles {
+            position: absolute;
+            top: -30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 4;
+        }
+
+        .candle {
+            width: 10px;
+            height: 40px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #8fd3f4 5px, #8fd3f4 10px);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .flame {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 15px;
+            background: #ffeb3b;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 10px #ff9800;
+            animation: flicker 0.5s infinite alternate;
+        }
+
+        /* --- متن بادکنکی (Inflatable Text) --- */
+        .title {
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            text-align: center;
+            font-size: 80px;
+            color: #fff;
+            text-shadow: 
+                2px 2px 0 #ff6b6b,
+                4px 4px 0 #4ecdc4,
+                0 10px 20px rgba(0,0,0,0.2);
+            z-index: 20;
+            opacity: 0;
+            /* انیمیشن باد شدن */
+            animation: inflate 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation-delay: 1.5s; /* بعد از کیک ظاهر شود */
+        }
+
+        /* --- کاغذ رنگی (Confetti) --- */
+        .confetti-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            top: 50%;
+            left: 50%;
+            opacity: 0;
+        }
+
+        /* --- تعریف انیمیشن‌ها --- */
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-120vh) rotate(20deg); }
+        }
+
+        @keyframes cakePop {
+            0% { transform: translateY(200px) scale(0); opacity: 0; }
+            100% { transform: translateY(50px) scale(1); opacity: 1; }
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes inflate {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; } /* کمی بیشتر باد می‌شود */
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* انیمیشن انفجار کاغذ رنگی */
+        @keyframes explode {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(720deg); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="title">HAPPY BIRTHDAY!</div>
+
+    <div class="balloon-container" id="balloons"></div>
+
+    <div class="cake-container">
+        <div class="plate"></div>
+        <div class="layer layer-bottom"></div>
+        <div class="layer layer-middle"></div>
+        <div class="layer layer-top">
+             <div class="frosting"></div>
+             <div class="candles">
+                 <div class="candle"><div class="flame"></div></div>
+                 <div class="candle"><div class="flame"></div></div>
+                 <div class="candle"><div class="flame"></div></div>
+             </div>
+        </div>
+    </div>
+
+    <div class="confetti-container" id="confetti"></div>
+
+    <script>
+        // --- 1. تولید بادکنک‌های تصادفی ---
+        const balloonContainer = document.getElementById('balloons');
+        const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff'];
+
+        for (let i = 0; i < 30; i++) {
+            let b = document.createElement('div');
+            b.classList.add('balloon');
+            // موقعیت افقی تصادفی
+            b.style.left = Math.random() * 100 + 'vw';
+            // رنگ تصادفی
+            b.style.background = colors[Math.floor(Math.random() * colors.length)];
+            // سرعت تصادفی
+            b.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            // تاخیر تصادفی
+            b.style.animationDelay = (Math.random() * 5) + 's';
+            // اندازه تصادفی برای عمق
+            let scale = Math.random() * 0.5 + 0.5;
+            b.style.transform = `scale(${scale})`;
+            
+            balloonContainer.appendChild(b);
+        }
+
+        // --- 2. تولید انفجار کاغذ رنگی (Confetti) ---
+        const confettiContainer = document.getElementById('confetti');
+        
+        // این تابع ۱ ثانیه بعد اجرا می‌شود (وقتی کیک ظاهر شد)
+        setTimeout(() => {
+            for (let i = 0; i < 50; i++) {
+                let c = document.createElement('div');
+                c.classList.add('confetti');
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // جهت پرتاب تصادفی
+                let x = (Math.random() - 0.5) * 800 + 'px'; // چپ و راست
+                let y = (Math.random() - 1) * 600 + 'px'; // فقط به سمت بالا و اطراف
+                
+                c.style.setProperty('--tx', x);
+                c.style.setProperty('--ty', y);
+                
+                c.style.animation = `explode 2s ease-out forwards`;
+                
+                confettiContainer.appendChild(c);
+            }
+        }, 1000); // تاخیر ۱ ثانیه
+
+    </script>
+</body>
+</html>
