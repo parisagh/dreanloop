@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تیزر املاک - انیمیشن CSS</title>
+    <style>
+        /* تنظیمات کلی صفحه */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f7f6; /* پس‌زمینه تمیز و روشن */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* کانتینر اصلی انیمیشن */
+        .promo-container {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* پالت رنگی */
+        :root {
+            --color-house-body: #264653; /* آبی تیره حرفه‌ای */
+            --color-house-roof: #e76f51; /* نارنجی گرم */
+            --color-pin: #e9c46a; /* زرد ملایم */
+            --color-key: #2a9d8f; /* سبز کله‌غازی */
+            --color-contract: #f4a261; /* نارنجی روشن */
+            --bg-circle: #eef5f5;
+        }
+
+        /* دایره پس‌زمینه */
+        .bg-circle {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-color: var(--bg-circle);
+            border-radius: 50%;
+            z-index: 1;
+            animation: scaleIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* کانتینر آیکون‌ها */
+        svg {
+            z-index: 2;
+            width: 200px;
+            height: 200px;
+            overflow: visible;
+        }
+
+        /* --- استایل‌های خانه --- */
+        .house-body {
+            fill: var(--color-house-body);
+            transform-origin: bottom center;
+            animation: buildUp 0.8s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+        
+        .house-roof {
+            fill: var(--color-house-roof);
+            transform-origin: center;
+            animation: dropDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+            opacity: 0;
+        }
+
+        .window {
+            fill: #fff;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 1.2s forwards;
+        }
+
+        /* --- استایل‌های آیکون‌های اطراف --- */
+        .icon-pin {
+            fill: var(--color-pin);
+            transform-origin: center;
+            opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards;
+        }
+
+        .icon-key {
+            fill: var(--color-key);
+            transform-origin: center;
+            opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.7s forwards;
+        }
+
+        .icon-contract {
+            fill: var(--color-contract);
+            transform-origin: center;
+            opacity: 0;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.9s forwards;
+        }
+
+        /* متن پایین */
+        .promo-text {
+            z-index: 2;
+            margin-top: 20px;
+            text-align: center;
+            opacity: 0;
+            animation: slideUp 0.8s ease 2.2s forwards;
+        }
+
+        .promo-text h2 {
+            margin: 0;
+            color: var(--color-house-body);
+            font-size: 24px;
+        }
+        
+        .promo-text p {
+            margin: 5px 0 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* --- تعریف انیمیشن‌ها (Keyframes) --- */
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes buildUp {
+            from { transform: scaleY(0); opacity: 0; }
+            to { transform: scaleY(1); opacity: 1; }
+        }
+
+        @keyframes dropDown {
+            from { transform: translateY(-50px) scale(0.5); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0) translate(0, 0); opacity: 0; }
+            to { transform: scale(1) translate(0, 0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="promo-container">
+        <div class="bg-circle"></div>
+
+        <svg viewBox="0 0 200 200">
+            <g transform="translate(50, 50)">
+                <rect class="house-body" x="25" y="40" width="50" height="40" rx="2" />
+                <rect class="window" x="35" y="50" width="12" height="12" rx="1" />
+                <rect class="window" x="53" y="50" width="12" height="12" rx="1" />
+                <path class="house-roof" d="M15,40 L50,10 L85,40 Z" />
+            </g>
+
+            <g class="icon-pin" transform="translate(130, 40)">
+                <path d="M15,0 C6.7,0,0,6.7,0,15 c0,11,15,25,15,25 s15-14,15-25 C30,6.7,23.3,0,15,0 z M15,20 c-2.8,0-5-2.2-5-5 s2.2-5,5-5 s5,2.2,5,5 S17.8,20,15,20 z" transform="scale(0.8)"/>
+            </g>
+
+            <g class="icon-key" transform="translate(20, 100)">
+                <path d="M15,0 C6.7,0,0,6.7,0,15 s6.7,15,15,15 c2.5,0,4.8-0.6,6.9-1.7 l10.6,10.6 l4.2-4.2 l-2.8-2.8 l2.8-2.8 l-8.6-8.6 C29.4,4.8,22.7,0,15,0 z M15,22 c-3.9,0-7-3.1-7-7 s3.1-7,7-7 s7,3.1,7,7 S18.9,22,15,22 z" transform="rotate(-45) scale(0.8)"/>
+            </g>
+
+            <g class="icon-contract" transform="translate(130, 130)">
+                <rect x="0" y="0" width="24" height="32" rx="2" transform="rotate(10)"/>
+                <line x1="6" y1="8" x2="18" y2="8" stroke="#fff" stroke-width="2" transform="rotate(10, 12, 16) translate(2,2)"/>
+                <line x1="6" y1="14" x2="18" y2="14" stroke="#fff" stroke-width="2" transform="rotate(10, 12, 16) translate(2,2)"/>
+                <line x1="6" y1="20" x2="14" y2="20" stroke="#fff" stroke-width="2" transform="rotate(10, 12, 16) translate(2,2)"/>
+            </g>
+        </svg>
+
+        <div class="promo-text">
+            <h2>مشاورین املاک مدرن</h2>
+            <p>خانه رویایی خود را پیدا کنید</p>
+        </div>
+    </div>
+
+</body>
+</html>
