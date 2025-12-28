@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوبل چیز برگر رویایی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Vazirmatn:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'Vazirmatn', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* تصویر پس‌زمینه که فضا را می‌سازد */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+            filter: brightness(0.6); /* تاریک کردن برای خوانایی متن */
+            z-index: -2;
+            animation: zoomIn 20s infinite alternate; /* حرکت بسیار آرام تصویر */
+        }
+
+        /* لایه گرادینت برای حس سینمایی */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, #000000 100%);
+            z-index: -1;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif; /* فونت انگلیسی برای تیتر جذاب‌تر */
+            font-size: 5rem;
+            margin: 0;
+            text-transform: uppercase;
+            color: #ffcc00; /* رنگ زرد چدار */
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: #f1f1f1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            color: #ff5722; /* رنگ نارنجی تند */
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+        }
+
+        .btn-order {
+            background: linear-gradient(45deg, #ff5722, #ff8a65);
+            border: none;
+            padding: 15px 40px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-order:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 87, 34, 0.5);
+        }
+
+        /* --- افکت بخار غذا (Steam Animation) --- */
+        .steam-container {
+            position: absolute;
+            top: 40%; /* محل حدودی بالای برگر */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .steam {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: rise 3s infinite ease-out;
+            opacity: 0;
+        }
+
+        .steam:nth-child(1) { width: 30px; height: 30px; left: 20px; animation-delay: 0s; }
+        .steam:nth-child(2) { width: 40px; height: 40px; left: 40px; animation-delay: 1s; }
+        .steam:nth-child(3) { width: 20px; height: 20px; left: 60px; animation-delay: 2s; }
+
+        /* --- ذرات معلق (Cinematic Dust/Bokeh) --- */
+        .particle {
+            position: absolute;
+            background: rgba(255, 204, 0, 0.6);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: float 5s infinite linear;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-60px) scale(2); opacity: 0; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        /* ریسپانسیو برای موبایل */
+        @media (max-width: 600px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 1rem; }
+            .bg-image { background-position: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-image"></div>
+    <div class="overlay"></div>
+
+    <div id="particles"></div>
+
+    <div class="container">
+        <div class="steam-container">
+            <span class="steam"></span>
+            <span class="steam"></span>
+            <span class="steam"></span>
+        </div>
+
+        <h1>Gourmet Burger</h1>
+        <h2>طعم واقعی پنیر گودا و گوشت گریل شده</h2>
+        
+        <div class="price">285,000 تومان</div>
+        
+        <a href="#" class="btn-order">سفارش دهید</a>
+    </div>
+
+    <script>
+        // اسکریپت ساده برای ساخت ذرات معلق (Bokeh Effect)
+        const particlesContainer = document.getElementById('particles');
+        
+        for (let i = 0; i < 20; i++) {
+            let p = document.createElement('div');
+            p.classList.add('particle');
+            
+            // موقعیت تصادفی
+            let size = Math.random() * 5 + 2;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            
+            // سرعت تصادفی
+            let duration = Math.random() * 5 + 5;
+            p.style.animationDuration = duration + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+
+            particlesContainer.appendChild(p);
+        }
+    </script>
+</body>
+</html>
