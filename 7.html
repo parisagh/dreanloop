@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تیزر آرایشگاه نئونی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #050505; /* پس‌زمینه خیلی تیره و دارک */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* کانتینر اصلی */
+        .scene {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- نورپردازی محیطی (نئون آبی و نارنجی) --- */
+        .glow-blue {
+            position: absolute;
+            top: 20%; left: -50px;
+            width: 100px; height: 300px;
+            background: #00f7ff;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: pulseLight 3s infinite alternate;
+        }
+
+        .glow-orange {
+            position: absolute;
+            bottom: 20%; right: -50px;
+            width: 100px; height: 300px;
+            background: #ff5722;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: pulseLight 3s infinite alternate-reverse;
+        }
+
+        /* --- ماشین اصلاح (Clipper) --- */
+        .clipper-container {
+            position: relative;
+            z-index: 10;
+            transform: rotate(-15deg); /* زاویه گرفتن ماشین */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .clipper-body {
+            width: 80px;
+            height: 180px;
+            background: linear-gradient(135deg, #333, #111);
+            border-radius: 20px 20px 40px 40px;
+            box-shadow: 
+                inset 5px 5px 10px rgba(255,255,255,0.1),
+                -5px 0 20px rgba(0, 247, 255, 0.3), /* بازتاب آبی */
+                5px 0 20px rgba(255, 87, 34, 0.3); /* بازتاب نارنجی */
+            border: 2px solid #444;
+            position: relative;
+            animation: buzz 0.1s linear infinite; /* لرزش دائم */
+        }
+
+        /* سری فلزی (Chrome Head) */
+        .clipper-head {
+            position: absolute;
+            top: -30px;
+            left: 10px;
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(90deg, #888, #fff, #888); /* افکت کروم */
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+            z-index: 1;
+        }
+
+        /* دندانه‌های ماشین */
+        .clipper-blade {
+            position: absolute;
+            top: -35px;
+            left: 15px;
+            width: 50px;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                #333,
+                #333 2px,
+                #fff 2px,
+                #fff 4px
+            );
+            z-index: 0;
+        }
+
+        /* دکمه روشن/خاموش */
+        .switch {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px; height: 40px;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #00f7ff;
+        }
+
+        /* --- ذرات آب (Mist) --- */
+        .mist-container {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            pointer-events: none;
+        }
+
+        .droplet {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 4px #00f7ff;
+            opacity: 0;
+            animation: spray 2s infinite linear;
+        }
+
+        /* ایجاد تاخیر برای ذرات مختلف تا تصادفی به نظر برسند */
+        .d1 { animation-delay: 0.1s; left: 40%; }
+        .d2 { animation-delay: 0.3s; left: 60%; }
+        .d3 { animation-delay: 0.5s; left: 45%; }
+        .d4 { animation-delay: 0.7s; left: 55%; }
+        .d5 { animation-delay: 0.9s; left: 35%; }
+        .d6 { animation-delay: 1.1s; left: 65%; }
+
+        /* --- موهای در حال ریزش (Hair Fade Reveal) --- */
+        .hair-container {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hair-strand {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: #222;
+            top: 0;
+            opacity: 0;
+            animation: fall 1.5s infinite linear;
+        }
+
+        .h1 { left: 20%; animation-delay: 0.2s; }
+        .h2 { left: 80%; animation-delay: 0.6s; }
+        .h3 { left: 40%; animation-delay: 1.0s; }
+        .h4 { left: 60%; animation-delay: 1.4s; }
+
+        /* --- متن نئونی --- */
+        .promo-text {
+            margin-top: 50px;
+            color: #fff;
+            font-size: 32px;
+            text-transform: uppercase;
+            text-align: center;
+            z-index: 20;
+            letter-spacing: 4px;
+            /* افکت نئون */
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff5722,
+                0 0 40px #ff5722;
+            animation: flicker 2s infinite;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: #ccc;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            opacity: 0.7;
+        }
+
+        /* --- انیمیشن‌ها --- */
+
+        /* لرزش ماشین اصلاح (Buzzing) */
+        @keyframes buzz {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            25% { transform: translate(-1px, -2px) rotate(-1deg); }
+            50% { transform: translate(-3px, 0px) rotate(1deg); }
+            75% { transform: translate(3px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -1px) rotate(0deg); }
+        }
+
+        /* شناور بودن کل ماشین در هوا */
+        @keyframes float {
+            0%, 100% { transform: rotate(-15deg) translateY(0); }
+            50% { transform: rotate(-12deg) translateY(-20px); }
+        }
+
+        /* پاشش آب (Slow Motion Mist) */
+        @keyframes spray {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-150px) translateX(var(--x, 20px)) scale(0); opacity: 0; }
+        }
+
+        /* ریزش مو */
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(200px) rotate(90deg); opacity: 0; }
+        }
+
+        /* چشمک زدن متن (Neon Flicker) */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+                text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff5722,
+                0 0 40px #ff5722;
+            }
+            20%, 24%, 55% {
+                opacity: 0.5;
+                text-shadow: none;
+            }
+        }
+
+        /* تپش نور پس‌زمینه */
+        @keyframes pulseLight {
+            from { opacity: 0.3; transform: scale(1); }
+            to { opacity: 0.6; transform: scale(1.2); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="glow-blue"></div>
+    <div class="glow-orange"></div>
+
+    <div class="scene">
+        
+        <div class="clipper-container">
+            <div class="mist-container">
+                <div class="droplet d1" style="--x: -20px"></div>
+                <div class="droplet d2" style="--x: 20px"></div>
+                <div class="droplet d3" style="--x: -10px"></div>
+                <div class="droplet d4" style="--x: 30px"></div>
+                <div class="droplet d5" style="--x: -30px"></div>
+                <div class="droplet d6" style="--x: 10px"></div>
+            </div>
+
+            <div class="clipper-body">
+                <div class="clipper-head"></div>
+                <div class="clipper-blade"></div>
+                <div class="switch"></div>
+            </div>
+        </div>
+
+        <div class="hair-container">
+            <div class="hair-strand h1"></div>
+            <div class="hair-strand h2"></div>
+            <div class="hair-strand h3"></div>
+            <div class="hair-strand h4"></div>
+        </div>
+
+        <div class="promo-text">FRESH FADE</div>
+        <div class="sub-text">URBAN BARBER SHOP</div>
+
+    </div>
+
+</body>
+</html>
