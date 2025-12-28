@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pastel Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Lalezar&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Lalezar&family=Fasthand&display=swap" rel="stylesheet">
 
     <style>
         :root {
             /* پالت رنگی پاستیلی */
-            --bg-color: #fdf2e9; /* پس‌زمینه هلویی خیلی روشن */
-            --paper-color: #ffffff; /* کاغذ سفید */
-            --line-color: #e0f7fa; /* خطوط آبی خیلی کمرنگ */
-            --text-color: #6c5ce7; /* بنفش ملایم برای متن */
+            --bg-color: #fdf2e9;
+            --paper-color: #ffffff;
+            --line-color: #e0f7fa;
+            --text-color: #6c5ce7;
             
-            /* رنگ دکمه‌ها و المان‌ها */
             --pastel-pink: #ffb7b2;
             --pastel-blue: #a29bfe;
             --pastel-green: #81ecec;
@@ -24,23 +23,25 @@
             --pastel-purple: #a29bfe;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
-            /* الگوی خال‌خالی ریز برای پس‌زمینه */
             background-image: radial-gradient(#fab1a0 1px, transparent 1px);
             background-size: 20px 20px;
+            /* فونت پیش‌فرض عمومی (برای دکمه‌ها و توضیحات) */
             font-family: 'Lalezar', cursive;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* استایل اختصاصی برای انگلیسی و ایتالیایی */
+        body.latin-font {
+            font-family: 'Patrick Hand', cursive;
         }
 
         .notebook {
@@ -52,99 +53,92 @@
             position: relative;
         }
 
-        /* استایل صفحات نرم و لطیف */
         .page {
             background-color: var(--paper-color);
-            border-radius: 20px; /* گوشه‌های گردتر */
-            /* سایه نرم رنگی */
-            box-shadow: 8px 8px 0px rgba(162, 155, 254, 0.2), 
-                        0 0 20px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 8px 8px 0px rgba(162, 155, 254, 0.2), 0 0 20px rgba(0,0,0,0.05);
             padding: 25px;
             position: relative;
-            /* خطوط دفتر */
             background-image: repeating-linear-gradient(var(--paper-color) 0px, var(--paper-color) 29px, var(--line-color) 30px);
             min-height: 380px;
             overflow: hidden;
             border: 2px solid #fff;
         }
 
-        /* نوار چسب تزیینی بالای صفحه */
         .tape {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 30px;
-            background-color: var(--pastel-pink);
-            opacity: 0.6;
-            transform: translateX(-50%) rotate(-2deg);
-            z-index: 5;
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 100px; height: 30px; background-color: var(--pastel-pink); opacity: 0.6; z-index: 5;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* فنر نرم */
         .spiral-binding {
-            position: absolute;
-            top: 36%;
-            left: 20px;
-            right: 20px;
-            height: 40px;
-            z-index: 10;
-            display: flex;
-            justify-content: space-evenly;
+            position: absolute; top: 38%; left: 20px; right: 20px; height: 40px; z-index: 10;
+            display: flex; justify-content: space-evenly;
         }
+        .ring { width: 12px; height: 50px; background: #dfe6e9; border-radius: 10px; box-shadow: inset 1px 1px 2px #b2bec3; }
 
-        .ring {
-            width: 12px;
-            height: 50px;
-            background: #dfe6e9;
-            border-radius: 10px;
-            box-shadow: inset 1px 1px 2px #b2bec3;
-        }
-
-        /* --- صفحه کاور --- */
-        .cover-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
+        .cover-page { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        /* --- تنظیمات فونت تیترها --- */
         .title {
-            font-family: 'Indie Flower', cursive;
-            font-size: 5rem;
+            /* پیش‌فرض: فونت فانتزی فارسی (Fasthand) */
+            font-family: 'Katibeh', cursive; 
+            font-size: 5rem; 
             color: var(--pastel-blue);
-            transform: rotate(-5deg);
-            margin-bottom: 20px;
-            /* افکت نقاشی ماژیکی */
+            transform: rotate(-5deg); 
+            margin-bottom: 20px; 
             filter: drop-shadow(2px 2px 0px var(--pastel-pink));
+            line-height: 1.2;
         }
+
+        /* اگر انگلیسی/ایتالیایی شد، فونت تغییر کند */
+        body.latin-font .title {
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .section-title { 
+            /* پیش‌فرض: فونت فانتزی فارسی */
+            font-family: 'Katibeh', cursive;
+            font-size: 2.5rem; /* کمی بزرگتر برای خوانایی بهتر فونت جدید */
+            color: var(--text-color); 
+            text-align: center; 
+            margin-bottom: 15px; 
+            direction: ltr; 
+        }
+
+        /* اگر انگلیسی/ایتالیایی شد */
+        body.latin-font .section-title {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2.2rem;
+        }
+
+        /* استایل دکمه‌های زبان بالای دفترچه */
+        .notebook-lang {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-family: 'Patrick Hand', sans-serif;
+            font-size: 0.9rem;
+            z-index: 50;
+            display: flex;
+            gap: 8px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .lang-opt { cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .lang-opt:hover { opacity: 0.8; }
+        .lang-opt.active { opacity: 1; font-weight: bold; color: var(--text-color); border-bottom: 2px solid var(--pastel-pink); }
 
         /* انیمیشن‌ها */
-        .doodles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            pointer-events: none;
-        }
-
-        .doodle {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.8;
-        }
-
-        .color-1 { color: var(--pastel-pink); }
-        .color-2 { color: var(--pastel-mint); }
-        .color-3 { color: var(--pastel-yellow); text-shadow: 1px 1px 0 #fab1a0; }
-
+        .doodles { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+        .doodle { position: absolute; font-size: 2rem; opacity: 0.8; }
+        .color-1 { color: var(--pastel-pink); } .color-2 { color: var(--pastel-mint); } .color-3 { color: var(--pastel-yellow); text-shadow: 1px 1px 0 #fab1a0; }
         .star1 { top: 15%; left: 15%; animation: twinkle 2s infinite; }
         .star2 { top: 10%; right: 15%; animation: rotate-soft 5s infinite; font-size: 2.5rem; }
         .star3 { bottom: 20%; left: 10%; animation: float 3s ease-in-out infinite; }
-        
         .face1 { top: 35%; left: 20%; animation: float 3s ease-in-out infinite; font-size: 2.5rem; }
         .face2 { bottom: 15%; right: 20%; animation: bob 2s infinite; font-size: 3rem; }
         .face3 { top: 20%; right: 10%; animation: twinkle 3s infinite; }
@@ -154,96 +148,61 @@
         @keyframes twinkle { 0%, 100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
         @keyframes bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(5deg); } }
 
-
-        /* --- صفحه محتوا --- */
-        .content-page {
-            padding-top: 45px;
+        .content-page { padding-top: 45px; }
+        
+        /* فونت توضیحات همان لاله زار بماند بهتر است */
+        .desc-text { 
+            color: #636e72; 
+            text-align: center; 
+            font-size: 1rem; 
+            margin-bottom: 25px; 
+            background-color: rgba(255, 234, 167, 0.3); 
+            border-radius: 10px; 
+            padding: 5px; 
+            width: fit-content; 
+            margin-left: auto; 
+            margin-right: auto; 
         }
 
-        .section-title {
-            font-family: 'Patrick Hand', cursive; /* فونت انگلیسی دست‌نویس */
-            font-size: 2.2rem;
-            color: var(--text-color);
-            text-align: center;
-            margin-bottom: 15px;
-            direction: ltr;
-        }
-
-        .desc-text {
-            color: #636e72;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 25px;
-            background-color: rgba(255, 234, 167, 0.3);
-            border-radius: 10px;
-            padding: 5px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* دکمه‌های پاستیلی */
-        .links-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-        }
+        .links-container { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; }
 
         .pastel-btn {
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: #fff; font-size: 1.1rem; padding: 10px 20px;
+            width: 85%; border-radius: 50px; transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); letter-spacing: 1px;
+            position: relative; overflow: hidden;
+            font-family: inherit; 
+        }
+
+        html[dir="ltr"] .btn-icon { margin-left: 0; margin-right: 10px; }
+        html[dir="rtl"] .btn-icon { margin-left: 10px; margin-right: 0; }
+
+        .btn-home { background-color: #ffb7b2; }
+        .btn-sand1 { background-color: #ffda79; color: #555; }
+        .btn-sand2 { background-color: #ff9f43; }
+        .btn-salon { background-color: #81ecec; color: #555; }
+        .btn-bday { background-color: #a29bfe; }
+
+        .pastel-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 10px rgba(0,0,0,0.1); }
+        .btn-icon { font-size: 1.2rem; }
+
+        .social-icons { margin-top: 35px; display: flex; justify-content: center; gap: 20px; }
+        .social-icons a { color: #b2bec3; font-size: 1.8rem; transition: 0.3s; }
+        .social-icons a:hover { color: var(--pastel-blue); transform: scale(1.2); }
+
+        .floating-lang-switcher {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #fff;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            width: 85%;
-            border-radius: 50px; /* کاملا گرد */
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            font-family: 'Lalezar', cursive;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* رنگ‌های اختصاصی دکمه‌ها */
-        .btn-home { background-color: #ffb7b2; } /* صورتی */
-        .btn-sand1 { background-color: #ffda79; color: #555; } /* زرد */
-        .btn-sand2 { background-color: #ff9f43; } /* نارنجی ملایم */
-        .btn-salon { background-color: #81ecec; color: #555; } /* فیروزه‌ای */
-        .btn-bday { background-color: #a29bfe; } /* بنفش */
-
-        .pastel-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
-        }
-        
-        /* آیکون داخل دکمه */
-        .btn-icon {
-            margin-left: 10px;
-            font-size: 1.2rem;
-        }
-
-        /* شبکه‌های اجتماعی */
-        .social-icons {
-            margin-top: 35px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .social-icons a {
-            color: #b2bec3;
-            font-size: 1.8rem;
-            transition: 0.3s;
-        }
-
-        .social-icons a:hover {
-            color: var(--pastel-blue);
-            transform: scale(1.2);
+            gap: 10px;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            z-index: 100;
         }
 
     </style>
@@ -254,54 +213,55 @@
         
         <div class="page cover-page">
             <div class="tape"></div>
+            
+            <div class="notebook-lang">
+                <span class="lang-opt" onclick="setLanguage('fa')">FA</span>
+                <span class="lang-opt" onclick="setLanguage('en')">EN</span>
+                <span class="lang-opt" onclick="setLanguage('it')">IT</span>
+            </div>
 
             <div class="doodles">
                 <i class="fa-solid fa-star doodle star1 color-3"></i>
                 <i class="fa-regular fa-star doodle star2 color-1"></i>
                 <i class="fa-solid fa-star doodle star3 color-2"></i>
-                
                 <i class="fa-regular fa-face-smile doodle face1 color-2"></i>
                 <i class="fa-solid fa-face-grin-wink doodle face2 color-3"></i>
                 <i class="fa-regular fa-face-kiss-wink-heart doodle face3 color-1"></i>
             </div>
-            <h1 class="title">Port<br>folio</h1>
+            <h1 class="title" id="txt-title">Port<br>folio</h1>
         </div>
 
         <div class="spiral-binding">
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
         </div>
 
         <div class="page content-page">
-            <h2 class="section-title">✨ Our Designs ✨</h2>
+            <h2 class="section-title" id="txt-section-title">✨ Our Designs ✨</h2>
             
-            <p class="desc-text">
+            <p class="desc-text" id="txt-desc">
                 دنیای رنگی ما رو ببینید
             </p>
 
             <div class="links-container">
                 <a href="https://parisagh.github.io/parisa.github.io/4" class="pastel-btn btn-home">
-                    <span class="btn-icon">🏠</span> املاکی
+                    <span class="btn-icon">🏠</span> <span id="txt-realestate">املاکی</span>
                 </a>
                 
                 <a href="https://parisagh.github.io/parisa.github.io/5" class="pastel-btn btn-sand1">
-                    <span class="btn-icon">🍔</span> ساندویچی ۱
+                    <span class="btn-icon">🍔</span> <span id="txt-sand1">ساندویچی ۱</span>
                 </a>
 
                 <a href="https://parisagh.github.io/parisa.github.io/6" class="pastel-btn btn-sand2">
-                    <span class="btn-icon">🌭</span> ساندویچی ۲
+                    <span class="btn-icon">🌭</span> <span id="txt-sand2">ساندویچی ۲</span>
                 </a>
 
                 <a href="https://parisagh.github.io/parisa.github.io/7" class="pastel-btn btn-salon">
-                    <span class="btn-icon">💇‍♀️</span> آرایشگاه
+                    <span class="btn-icon">💇‍♀️</span> <span id="txt-salon">آرایشگاه</span>
                 </a>
 
                 <a href="https://parisagh.github.io/parisa.github.io/8" class="pastel-btn btn-bday">
-                    <span class="btn-icon">🎂</span> تولد
+                    <span class="btn-icon">🎂</span> <span id="txt-bday">تولد</span>
                 </a>
             </div>
 
@@ -313,6 +273,96 @@
         </div>
 
     </div>
+
+    <div class="floating-lang-switcher">
+        <span class="lang-opt" onclick="setLanguage('fa')">FA</span> | 
+        <span class="lang-opt" onclick="setLanguage('en')">EN</span> | 
+        <span class="lang-opt" onclick="setLanguage('it')">IT</span>
+    </div>
+
+    <script>
+        const translations = {
+            fa: {
+                title: "پورت<br>فولیو",
+                sectionTitle: "✨ طراحی‌های ما ✨",
+                desc: "دنیای رنگی ما رو ببینید",
+                realestate: "املاکی",
+                sand1: "ساندویچی ۱",
+                sand2: "ساندویچی ۲",
+                salon: "آرایشگاه",
+                bday: "تولد",
+                dir: "rtl",
+                fontClass: ""
+            },
+            en: {
+                title: "Port<br>folio",
+                sectionTitle: "✨ Our Designs ✨",
+                desc: "See our colorful world",
+                realestate: "Real Estate",
+                sand1: "Sandwich Shop 1",
+                sand2: "Sandwich Shop 2",
+                salon: "Beauty Salon",
+                bday: "Birthday Theme",
+                dir: "ltr",
+                fontClass: "latin-font"
+            },
+            it: {
+                title: "Porta<br>foglio",
+                sectionTitle: "✨ I Nostri Design ✨",
+                desc: "Guarda il nostro mondo colorato",
+                realestate: "Immobiliare",
+                sand1: "Paninoteca 1",
+                sand2: "Paninoteca 2",
+                salon: "Parrucchiere",
+                bday: "Compleanno",
+                dir: "ltr",
+                fontClass: "latin-font"
+            }
+        };
+
+        function setLanguage(lang) {
+            const data = translations[lang];
+            
+            document.getElementById('txt-title').innerHTML = data.title;
+            document.getElementById('txt-section-title').innerText = data.sectionTitle;
+            document.getElementById('txt-desc').innerText = data.desc;
+            document.getElementById('txt-realestate').innerText = data.realestate;
+            document.getElementById('txt-sand1').innerText = data.sand1;
+            document.getElementById('txt-sand2').innerText = data.sand2;
+            document.getElementById('txt-salon').innerText = data.salon;
+            document.getElementById('txt-bday').innerText = data.bday;
+
+            document.documentElement.dir = data.dir;
+
+            if (data.fontClass) {
+                document.body.classList.add('latin-font');
+            } else {
+                document.body.classList.remove('latin-font');
+            }
+
+            document.querySelectorAll('.lang-opt').forEach(el => el.classList.remove('active'));
+            
+            document.querySelectorAll('.lang-opt').forEach(el => {
+                if(el.innerText.toLowerCase().includes(lang)) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        setLanguage('en'); 
+
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                const country = data.country_code;
+                console.log("User Country:", country);
+                if (country === 'IR') { setLanguage('fa'); } 
+                else if (country === 'IT') { setLanguage('it'); } 
+                else { setLanguage('en'); }
+            })
+            .catch(error => { setLanguage('en'); });
+
+    </script>
 
 </body>
 </html>
