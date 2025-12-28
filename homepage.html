@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pastel Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Lalezar&family=Fasthand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Lalezar&family=Katibeh&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -14,7 +14,7 @@
             --paper-color: #ffffff;
             --line-color: #e0f7fa;
             --text-color: #6c5ce7;
-            
+           
             --pastel-pink: #ffb7b2;
             --pastel-blue: #a29bfe;
             --pastel-green: #81ecec;
@@ -29,7 +29,7 @@
             background-color: var(--bg-color);
             background-image: radial-gradient(#fab1a0 1px, transparent 1px);
             background-size: 20px 20px;
-            /* فونت پیش‌فرض عمومی (برای دکمه‌ها و توضیحات) */
+            /* فونت پیش‌فرض عمومی (برای دکمه‌ها و توضیحات فارسی) */
             font-family: 'Lalezar', cursive;
             display: flex;
             justify-content: center;
@@ -78,38 +78,28 @@
         .ring { width: 12px; height: 50px; background: #dfe6e9; border-radius: 10px; box-shadow: inset 1px 1px 2px #b2bec3; }
 
         .cover-page { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        
+       
         /* --- تنظیمات فونت تیترها --- */
         .title {
-            /* پیش‌فرض: فونت فانتزی فارسی (Fasthand) */
-            font-family: 'Katibeh', cursive; 
-            font-size: 5rem; 
+            /* همیشه از فونت انگلیسی استفاده کن چون متن همیشه انگلیسی است */
+            font-family: 'Indie Flower', cursive;
+            font-size: 5rem;
             color: var(--pastel-blue);
-            transform: rotate(-5deg); 
-            margin-bottom: 20px; 
+            transform: rotate(-5deg);
+            margin-bottom: 20px;
             filter: drop-shadow(2px 2px 0px var(--pastel-pink));
             line-height: 1.2;
+            direction: ltr; /* همیشه چپ‌چین */
         }
 
-        /* اگر انگلیسی/ایتالیایی شد، فونت تغییر کند */
-        body.latin-font .title {
-            font-family: 'Indie Flower', cursive;
-        }
-
-        .section-title { 
-            /* پیش‌فرض: فونت فانتزی فارسی */
-            font-family: 'Katibeh', cursive;
-            font-size: 2.5rem; /* کمی بزرگتر برای خوانایی بهتر فونت جدید */
-            color: var(--text-color); 
-            text-align: center; 
-            margin-bottom: 15px; 
-            direction: ltr; 
-        }
-
-        /* اگر انگلیسی/ایتالیایی شد */
-        body.latin-font .section-title {
+        .section-title {
+            /* همیشه از فونت انگلیسی استفاده کن چون متن همیشه انگلیسی است */
             font-family: 'Patrick Hand', cursive;
             font-size: 2.2rem;
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 15px;
+            direction: ltr;
         }
 
         /* استایل دکمه‌های زبان بالای دفترچه */
@@ -149,19 +139,19 @@
         @keyframes bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(5deg); } }
 
         .content-page { padding-top: 45px; }
-        
-        /* فونت توضیحات همان لاله زار بماند بهتر است */
-        .desc-text { 
-            color: #636e72; 
-            text-align: center; 
-            font-size: 1rem; 
-            margin-bottom: 25px; 
-            background-color: rgba(255, 234, 167, 0.3); 
-            border-radius: 10px; 
-            padding: 5px; 
-            width: fit-content; 
-            margin-left: auto; 
-            margin-right: auto; 
+       
+        /* فونت توضیحات برای فارسی لاله زار و برای انگلیسی پاتریک */
+        .desc-text {
+            color: #636e72;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            background-color: rgba(255, 234, 167, 0.3);
+            border-radius: 10px;
+            padding: 5px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .links-container { display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%; }
@@ -172,7 +162,7 @@
             width: 85%; border-radius: 50px; transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); letter-spacing: 1px;
             position: relative; overflow: hidden;
-            font-family: inherit; 
+            font-family: inherit;
         }
 
         html[dir="ltr"] .btn-icon { margin-left: 0; margin-right: 10px; }
@@ -210,10 +200,10 @@
 <body>
 
     <div class="notebook">
-        
+       
         <div class="page cover-page">
             <div class="tape"></div>
-            
+           
             <div class="notebook-lang">
                 <span class="lang-opt" onclick="setLanguage('fa')">FA</span>
                 <span class="lang-opt" onclick="setLanguage('en')">EN</span>
@@ -238,7 +228,7 @@
 
         <div class="page content-page">
             <h2 class="section-title" id="txt-section-title">✨ Our Designs ✨</h2>
-            
+           
             <p class="desc-text" id="txt-desc">
                 دنیای رنگی ما رو ببینید
             </p>
@@ -247,7 +237,7 @@
                 <a href="https://parisagh.github.io/parisa.github.io/4" class="pastel-btn btn-home">
                     <span class="btn-icon">🏠</span> <span id="txt-realestate">املاکی</span>
                 </a>
-                
+               
                 <a href="https://parisagh.github.io/parisa.github.io/5" class="pastel-btn btn-sand1">
                     <span class="btn-icon">🍔</span> <span id="txt-sand1">ساندویچی ۱</span>
                 </a>
@@ -266,25 +256,25 @@
             </div>
 
             <div class="social-icons">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.instagram.com/dream_loop.it" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/dream-loop-studio/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://t.me/dream_loop_it" target="_blank"><i class="fab fa-telegram"></i></a>
             </div>
         </div>
 
     </div>
 
     <div class="floating-lang-switcher">
-        <span class="lang-opt" onclick="setLanguage('fa')">FA</span> | 
-        <span class="lang-opt" onclick="setLanguage('en')">EN</span> | 
+        <span class="lang-opt" onclick="setLanguage('fa')">FA</span> |
+        <span class="lang-opt" onclick="setLanguage('en')">EN</span> |
         <span class="lang-opt" onclick="setLanguage('it')">IT</span>
     </div>
 
     <script>
         const translations = {
             fa: {
-                title: "پورت<br>فولیو",
-                sectionTitle: "✨ طراحی‌های ما ✨",
+                title: "Port<br>folio", // تغییر به انگلیسی
+                sectionTitle: "✨ Our Designs ✨", // تغییر به انگلیسی
                 desc: "دنیای رنگی ما رو ببینید",
                 realestate: "املاکی",
                 sand1: "ساندویچی ۱",
@@ -322,7 +312,7 @@
 
         function setLanguage(lang) {
             const data = translations[lang];
-            
+           
             document.getElementById('txt-title').innerHTML = data.title;
             document.getElementById('txt-section-title').innerText = data.sectionTitle;
             document.getElementById('txt-desc').innerText = data.desc;
@@ -341,7 +331,7 @@
             }
 
             document.querySelectorAll('.lang-opt').forEach(el => el.classList.remove('active'));
-            
+           
             document.querySelectorAll('.lang-opt').forEach(el => {
                 if(el.innerText.toLowerCase().includes(lang)) {
                     el.classList.add('active');
@@ -349,15 +339,15 @@
             });
         }
 
-        setLanguage('en'); 
+        setLanguage('en');
 
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
             .then(data => {
                 const country = data.country_code;
                 console.log("User Country:", country);
-                if (country === 'IR') { setLanguage('fa'); } 
-                else if (country === 'IT') { setLanguage('it'); } 
+                if (country === 'IR') { setLanguage('fa'); }
+                else if (country === 'IT') { setLanguage('it'); }
                 else { setLanguage('en'); }
             })
             .catch(error => { setLanguage('en'); });
@@ -366,3 +356,4 @@
 
 </body>
 </html>
+
