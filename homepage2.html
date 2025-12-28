@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallax Pastel Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Lalezar&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fdf2e9;
+            --paper-color: #ffffff;
+            --line-color: #e0f7fa;
+            --text-color: #6c5ce7;
+            
+            --theme-pink: #ffb7b2;
+            --theme-yellow: #ffda79;
+            --theme-orange: #ff9f43;
+            --theme-mint: #81ecec;
+            --theme-purple: #a29bfe;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#fab1a0 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Lalezar', cursive;
+            min-height: 150vh; /* ارتفاع زیاد برای اسکرول خوردن */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        /* --- اشیاء پس‌زمینه متحرک (Parallax Elements) --- */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-obj {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.6;
+            transition: transform 0.1s linear; /* حرکت نرم هنگام اسکرول */
+        }
+
+        /* رنگ‌بندی آبجکت‌ها */
+        .c-pink { color: var(--theme-pink); }
+        .c-mint { color: var(--theme-mint); }
+        .c-yellow { color: var(--theme-yellow); }
+        .c-purple { color: var(--theme-purple); }
+
+        /* --- استایل دفترچه --- */
+        .notebook {
+            width: 90%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            margin-bottom: 50px;
+            z-index: 10;
+        }
+
+        .page {
+            background-color: var(--paper-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 25px;
+            position: relative;
+            background-image: repeating-linear-gradient(var(--paper-color) 0px, var(--paper-color) 29px, var(--line-color) 30px);
+            border: 3px solid #fff;
+            
+            /* تنظیمات انیمیشن ورود */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* کلاسی که با جاوااسکریپت اضافه می‌شود تا صفحه ظاهر شود */
+        .page.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tape {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 120px; height: 35px; background-color: var(--theme-pink); opacity: 0.8; z-index: 5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* فنر */
+        .spiral-binding {
+            position: absolute; top: 35%; left: 20px; right: 20px; height: 50px; z-index: 15;
+            display: flex; justify-content: space-evenly;
+        }
+        .ring { width: 15px; height: 60px; background: #dfe6e9; border-radius: 10px; box-shadow: inset 1px 1px 3px #b2bec3; transform: skewX(-10deg); }
+
+        /* کاور */
+        .cover-page { 
+            height: 400px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+        }
+        
+        .title {
+            font-family: 'Indie Flower', cursive; font-size: 5.5rem; color: var(--theme-purple);
+            transform: rotate(-5deg); margin-bottom: 20px; 
+            filter: drop-shadow(3px 3px 0px var(--theme-pink));
+        }
+
+        /* محتوا */
+        .content-page { padding-top: 60px; min-height: 500px; }
+        .section-title { font-family: 'Patrick Hand', cursive; font-size: 2.5rem; color: var(--text-color); text-align: center; margin-bottom: 10px; }
+        .desc-text { color: #636e72; text-align: center; font-size: 1.1rem; margin-bottom: 30px; background: rgba(255, 234, 167, 0.4); border-radius: 10px; padding: 5px 15px; width: fit-content; margin: 0 auto 30px auto; }
+
+        /* دکمه‌های لینک */
+        #dynamic-links-container {
+            display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%;
+        }
+
+        .pastel-btn {
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: #fff; font-size: 1.2rem; padding: 12px 20px;
+            width: 85%; border-radius: 50px; 
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
+            font-family: 'Lalezar', cursive; letter-spacing: 1px;
+            position: relative; overflow: hidden;
+            
+            /* حالت اولیه مخفی برای انیمیشن آبشاری */
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حالت ارتجاعی */
+        }
+
+        /* کلاس انیمیشن دکمه‌ها */
+        .pastel-btn.pop-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .pastel-btn:hover { transform: translateY(-3px) scale(1.03) !important; box-shadow: 0 6px 0 rgba(0,0,0,0.15); }
+        .btn-icon { margin-left: 10px; font-size: 1.4rem; }
+
+        /* رنگ‌ها */
+        .theme-pink { background-color: var(--theme-pink); }
+        .theme-yellow { background-color: var(--theme-yellow); color: #555; }
+        .theme-orange { background-color: var(--theme-orange); }
+        .theme-mint { background-color: var(--theme-mint); color: #555; }
+        .theme-purple { background-color: var(--theme-purple); }
+
+        .social-icons { margin-top: 50px; display: flex; justify-content: center; gap: 25px; opacity: 0; transform: scale(0.5); transition: 0.5s; }
+        .social-icons.visible { opacity: 1; transform: scale(1); }
+        .social-icons a { color: #b2bec3; font-size: 2rem; transition: 0.3s; }
+        .social-icons a:hover { color: var(--theme-purple); transform: rotate(15deg) scale(1.2); }
+
+    </style>
+</head>
+<body>
+
+    <div class="parallax-bg" id="parallax-scene">
+        <i class="fa-solid fa-star floating-obj c-yellow" style="top: 10%; left: 10%;" data-speed="2"></i>
+        <i class="fa-solid fa-face-smile floating-obj c-pink" style="top: 20%; right: 15%; font-size: 3rem;" data-speed="-3"></i>
+        <i class="fa-solid fa-star floating-obj c-mint" style="top: 40%; left: 5%;" data-speed="4"></i>
+        <i class="fa-solid fa-cloud floating-obj c-purple" style="top: 15%; left: 40%; font-size: 4rem; opacity: 0.3;" data-speed="1"></i>
+        
+        <i class="fa-solid fa-heart floating-obj c-pink" style="top: 60%; right: 10%;" data-speed="-2"></i>
+        <i class="fa-solid fa-face-grin-wink floating-obj c-yellow" style="top: 70%; left: 15%; font-size: 3.5rem;" data-speed="3"></i>
+        <i class="fa-solid fa-star floating-obj c-mint" style="top: 85%; right: 25%;" data-speed="-4"></i>
+        <i class="fa-solid fa-music floating-obj c-purple" style="top: 55%; left: 8%;" data-speed="2"></i>
+    </div>
+
+    <div class="notebook">
+        <div class="page cover-page">
+            <div class="tape"></div>
+            <h1 class="title">Port<br>folio</h1>
+            <p style="font-family: 'Lalezar'; color: #888; margin-top: 10px;">(اسکرول کنید 👇)</p>
+        </div>
+
+        <div class="spiral-binding">
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+            <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+        </div>
+
+        <div class="page content-page">
+            <h2 class="section-title">✨ Our Designs ✨</h2>
+            <p class="desc-text">لینک‌های اختصاصی ما</p>
+
+            <div id="dynamic-links-container"></div>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. تنظیمات لینک‌ها
+        // ==========================================
+        const myLinks = [
+            { title: "املاکی", url: "https://parisagh.github.io/parisa.github.io/4", icon: "🏠", color: "theme-pink" },
+            { title: "ساندویچی ۱", url: "https://parisagh.github.io/parisa.github.io/5", icon: "🍔", color: "theme-yellow" },
+            { title: "ساندویچی ۲", url: "https://parisagh.github.io/parisa.github.io/6", icon: "🌭", color: "theme-orange" },
+            { title: "آرایشگاه", url: "https://parisagh.github.io/parisa.github.io/7", icon: "💇‍♀️", color: "theme-mint" },
+            { title: "تولد", url: "https://parisagh.github.io/parisa.github.io/8", icon: "🎂", color: "theme-purple" }
+        ];
+
+        // ساخت دکمه‌ها
+        const container = document.getElementById('dynamic-links-container');
+        myLinks.forEach((link, index) => {
+            const aTag = document.createElement('a');
+            aTag.href = link.url;
+            aTag.className = `pastel-btn ${link.color}`;
+            // اضافه کردن delay برای اینکه دکمه‌ها پشت سر هم ظاهر شوند
+            aTag.style.transitionDelay = `${index * 100}ms`; 
+            aTag.innerHTML = `<span class="btn-icon">${link.icon}</span> ${link.title}`;
+            container.appendChild(aTag);
+        });
+
+        // ==========================================
+        // 2. انیمیشن پارالاکس (حرکت اشیاء با اسکرول)
+        // ==========================================
+        document.addEventListener("mousemove", parallax);
+        document.addEventListener("scroll", parallaxScroll);
+
+        function parallaxScroll(e) {
+            const scrollValue = window.scrollY; // مقدار اسکرول شده
+            
+            document.querySelectorAll(".floating-obj").forEach(function(move){
+                var moving_value = move.getAttribute("data-speed");
+                var x = (scrollValue * moving_value) / 10;
+                var y = (scrollValue * moving_value) / 10;
+                
+                // حرکت دادن آبجکت بر اساس اسکرول
+                move.style.transform = `translate(${x}px, ${y}px) rotate(${scrollValue/10}deg)`;
+            });
+        }
+        
+        function parallax(e) {
+             // حرکت جزئی با موس هم اضافه کردم برای زیبایی بیشتر
+            document.querySelectorAll(".floating-obj").forEach(function(move){
+                var moving_value = move.getAttribute("data-speed");
+                var x = (e.clientX * moving_value) / 200;
+                var y = (e.clientY * moving_value) / 200;
+                // ترکیب حرکت موس با ترنسفورم قبلی (اینجا ساده‌تر نگهش داشتم که با اسکرول تداخل نکند)
+            });
+        }
+
+        // ==========================================
+        // 3. انیمیشن ظاهر شدن هنگام رسیدن (Scroll Reveal)
+        // ==========================================
+        const observerOptions = {
+            threshold: 0.2 // وقتی 20 درصد المنت دیده شد
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // اگر صفحه است
+                    if(entry.target.classList.contains('page')) {
+                        entry.target.classList.add('visible');
+                    }
+                    // اگر دکمه است
+                    if(entry.target.classList.contains('pastel-btn')) {
+                        entry.target.classList.add('pop-in');
+                    }
+                     // اگر آیکون اجتماعی است
+                     if(entry.target.classList.contains('social-icons')) {
+                        entry.target.classList.add('visible');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // انتخاب المنت‌هایی که باید انیمیشن داشته باشند
+        document.querySelectorAll('.page').forEach(el => observer.observe(el));
+        document.querySelectorAll('.pastel-btn').forEach(el => observer.observe(el));
+        document.querySelectorAll('.social-icons').forEach(el => observer.observe(el));
+
+    </script>
+
+</body>
+</html>
