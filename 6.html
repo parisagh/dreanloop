@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موشن گرافیک پیتزا - نسخه سبک</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #ff9800; /* نارنجی پرانرژی */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        /* کانتینر اصلی */
+        .pizza-box {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        /* استایل مشترک برای تمام لایه‌ها */
+        .layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            margin: auto;
+            border-radius: 50%;
+            opacity: 0; /* در ابتدا مخفی */
+        }
+
+        /* 1. نان پیتزا */
+        .crust {
+            width: 300px; height: 300px;
+            background: #f5a623;
+            border: 10px solid #d38510;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            animation: popIn 4s infinite;
+        }
+
+        /* 2. سس */
+        .sauce {
+            width: 260px; height: 260px;
+            background: #d0021b;
+            animation: popIn 4s infinite;
+            animation-delay: 0.5s;
+        }
+
+        /* 3. پنیر */
+        .cheese {
+            width: 240px; height: 240px;
+            background: #f8e71c;
+            animation: popIn 4s infinite;
+            animation-delay: 1s;
+        }
+
+        /* 4. پپرونی‌ها */
+        .pepperoni {
+            position: absolute;
+            width: 40px; height: 40px;
+            background: #b71c1c;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* موقعیت پپرونی‌ها */
+        .p1 { top: 30%; left: 30%; animation: drop 4s infinite 1.5s; }
+        .p2 { top: 25%; left: 60%; animation: drop 4s infinite 1.6s; }
+        .p3 { top: 60%; left: 25%; animation: drop 4s infinite 1.7s; }
+        .p4 { top: 55%; left: 55%; animation: drop 4s infinite 1.8s; }
+        .p5 { top: 70%; left: 45%; animation: drop 4s infinite 1.9s; }
+
+        /* متن نهایی */
+        .text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 900;
+            font-size: 50px;
+            text-shadow: 3px 3px 0 #d0021b;
+            opacity: 0;
+            z-index: 10;
+            animation: textShow 4s infinite 2.5s;
+        }
+
+        /* --- انیمیشن‌ها --- */
+
+        /* ظاهر شدن لایه‌ها با حالت فنری */
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            20% { transform: scale(1.1); opacity: 1; } /* کمی بزرگتر برای حالت فنری */
+            30% { transform: scale(1); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            90% { transform: scale(0); opacity: 0; } /* محو شدن */
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* سقوط پپرونی‌ها از بالا */
+        @keyframes drop {
+            0% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+            20% { transform: translateY(0) scale(1); opacity: 1; }
+            80% { transform: translateY(0) scale(1); opacity: 1; }
+            90% { transform: scale(0); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* ظاهر شدن متن */
+        @keyframes textShow {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); opacity: 1; }
+            30% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="pizza-box">
+        <div class="layer crust"></div>
+        <div class="layer sauce"></div>
+        <div class="layer cheese"></div>
+        
+        <div class="pepperoni p1"></div>
+        <div class="pepperoni p2"></div>
+        <div class="pepperoni p3"></div>
+        <div class="pepperoni p4"></div>
+        <div class="pepperoni p5"></div>
+
+        <div class="text">YUMMY!</div>
+    </div>
+
+</body>
+</html>
