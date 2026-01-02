@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioielleria Ghasemzadeh | Collezione Esclusiva</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- تنظیمات کلی و رنگ‌ها --- */
+        :root {
+            --navy-dark: #051024;
+            --navy-light: #0f264a;
+            --gold: #D4AF37;
+            --gold-light: #F7E49A;
+            --text-white: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--navy-dark);
+            background-image: radial-gradient(circle at 50% 50%, var(--navy-light) 0%, var(--navy-dark) 80%);
+            color: var(--text-white);
+            /* فونت متن اصلی */
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- افکت ذرات طلا در پس‌زمینه --- */
+        .gold-dust {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(var(--gold) 1px, transparent 1px),
+                radial-gradient(var(--gold) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.1;
+            animation: dustMove 20s linear infinite;
+        }
+
+        @keyframes dustMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+
+        /* --- هدر و ناوبری --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif; /* فونت تیتر */
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* --- بخش اصلی (Hero) --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem; /* سایز بزرگتر برای حروف لاتین */
+            background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #aaa;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.8s;
+            font-weight: 300;
+        }
+
+        .scroll-down {
+            margin-top: 3rem;
+            color: var(--gold);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 1.2s, bounce 2s infinite 1.2s;
+        }
+
+        /* --- بخش محصولات (نمایش زیگزاگی) --- */
+        .collection {
+            padding: 5rem 10%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* زیگزاگ در حالت LTR */
+        /* در حالت چپ‌چین، Row یعنی عکس چپ، متن راست. */
+        /* Row-reverse یعنی عکس راست، متن چپ. */
+        .product-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .product-image-wrapper {
+            flex: 1;
+            position: relative;
+            max-width: 500px;
+        }
+
+        /* حاشیه طلایی دور عکس */
+        .product-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            /* تغییر جهت حاشیه برای LTR */
+            left: -15px; 
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--gold);
+            z-index: -1;
+            transition: transform 0.5s ease;
+        }
+
+        .product-image-wrapper:hover::before {
+            transform: translate(10px, 10px);
+        }
+
+        .product-img {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease, filter 0.5s ease;
+            cursor: pointer;
+        }
+
+        .product-img:hover {
+            transform: scale(1.02) rotate(1deg);
+            filter: brightness(1.1);
+        }
+
+        .product-info {
+            flex: 0.8;
+            padding: 0 3rem;
+            text-align: left; /* متن چپ‌چین شود */
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .product-title::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            /* تغییر جهت خط زیرین برای LTR */
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.5s ease;
+        }
+
+        .product-card.visible .product-title::after {
+            width: 100%;
+        }
+
+        .product-desc {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .btn-gold {
+            display: inline-block;
+            padding: 10px 30px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase; /* حروف بزرگ برای زیبایی */
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold);
+            color: var(--navy-dark);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* --- فوتر --- */
+        footer {
+            text-align: center;
+            padding: 4rem;
+            background-color: #020812;
+            color: #666;
+            position: relative;
+            z-index: 2;
+            font-size: 0.9rem;
+        }
+
+        /* --- انیمیشن‌ها --- */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* --- واکنش‌گرا (موبایل) --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .product-card, .product-card:nth-child(even) {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+            .product-info { text-align: center; }
+            .product-image-wrapper::before { display: none; }
+            .product-info { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gold-dust"></div>
+
+    <nav>
+        <div class="logo">GZ GOLD</div>
+        <a href="#" class="btn-gold">Contattaci</a>
+    </nav>
+
+    <header class="hero">
+        <h1>L'Evoluzione dello Splendore</h1>
+        <p>Una collezione di quattro capolavori, per chi riconosce la differenza.</p>
+        <div class="scroll-down">⇩</div>
+    </header>
+
+    <main class="collection">
+
+        <section class="product-card">
+            <div class="product-image-wrapper">
+                <img src="https://s34.picofile.com/file/8488936642/1767337632046.jpg" alt="Collana con Cuori in Oro" class="product-img">
+            </div>
+            <div class="product-info">
+                <h2 class="product-title">Danza dei Cuori</h2>
+                <p class="product-desc">
+                    Design delicato e romantico. Questa collana con pendenti a cuore simboleggia l'amore infinito. Perfetta per i momenti in cui vuoi brillare.
+                </p>
+                <a href="#" class="btn-gold">Scopri i Dettagli</a>
+            </div>
+        </section>
+
+        <section class="product-card">
+            <div class="product-image-wrapper">
+                <img src="https://s34.picofile.com/file/8488936650/1767337635443.jpg" alt="Parure Cuore Inciso" class="product-img">
+            </div>
+            <div class="product-info">
+                <h2 class="product-title">Arte Autentica</h2>
+                <p class="product-desc">
+                    Un incontro tra classico e moderno. Cuori in rilievo con incisioni a mano che riflettono la luce da ogni angolazione.
+                </p>
+                <a href="#" class="btn-gold">Scopri i Dettagli</a>
+            </div>
+        </section>
+
+        <section class="product-card">
+            <div class="product-image-wrapper">
+                <img src="https://s34.picofile.com/file/8488936668/1767337638366.jpg" alt="Parure Van Cleef Nero" class="product-img">
+            </div>
+            <div class="product-info">
+                <h2 class="product-title">Eleganza Onyx</h2>
+                <p class="product-desc">
+                    Audacia nel design. La fusione di oro puro e onice nero crea un contrasto mozzafiato che cattura ogni sguardo.
+                </p>
+                <a href="#" class="btn-gold">Scopri i Dettagli</a>
+            </div>
+        </section>
+
+        <section class="product-card">
+            <div class="product-image-wrapper">
+                <img src="https://s34.picofile.com/file/8488936676/1767337641632.jpg" alt="Bracciale a Catena" class="product-img">
+            </div>
+            <div class="product-info">
+                <h2 class="product-title">Potenza e Bellezza</h2>
+                <p class="product-desc">
+                    Un bracciale con maglie intrecciate e robuste. Design moderno per l'uso quotidiano e le occasioni formali. Simbolo di resistenza ed eleganza.
+                </p>
+                <a href="#" class="btn-gold">Scopri i Dettagli</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Progettato per la Gioielleria Ghasemzadeh</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
