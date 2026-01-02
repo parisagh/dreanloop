@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immobiliare | Case in Affitto</title>
+    <style>
+        /* --- Impostazioni Generali --- */
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- Header e Navigazione --- */
+        header {
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin-left: 20px; /* Spazio a sinistra per LTR */
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a.btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        
+        nav a.btn:hover {
+            background-color: #34495e;
+        }
+
+        /* --- Hero Section (Ricerca) --- */
+        .hero {
+            /* Immagine di sfondo scura per contrasto */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .search-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .search-box input, .search-box select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .search-box button {
+            padding: 12px 25px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background-color: #c0392b;
+        }
+
+        /* --- Griglia Immobili --- */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- Card Design --- */
+        .property-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .card-details {
+            padding: 20px;
+        }
+
+        .price {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .location {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .features span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+                width: 100%;
+            }
+            .search-box input, .search-box select, .search-box button {
+                width: 100%;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🏠 TrovaCasa</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Affitti</a>
+            <a href="#">Vendite</a>
+            <a href="#" class="btn">Inserisci Annuncio</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Trova la casa dei tuoi sogni</h1>
+        <p>Cerca tra migliaia di appartamenti e case in affitto nella tua zona</p>
+       
+        <form class="search-box">
+            <input type="text" placeholder="Città, quartiere o CAP...">
+            <select>
+                <option value="">Tipo di immobile</option>
+                <option value="apartment">Appartamento</option>
+                <option value="villa">Villa</option>
+                <option value="studio">Monolocale</option>
+            </select>
+            <button type="button">Cerca</button>
+        </form>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">Nuovi arrivi in affitto</h2>
+       
+        <div class="property-grid">
+           
+            <article class="property-card">
+                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80" alt="Appartamento Moderno" class="card-image">
+                <div class="card-details">
+                    <div class="price">€ 1.200 / mese</div>
+                    <h3 class="title">Appartamento Moderno Centro</h3>
+                    <p class="location">📍 Milano, Porta Venezia</p>
+                    <div class="features">
+                        <span>🛏 2 Camere</span>
+                        <span>🚿 1 Bagno</span>
+                        <span>📐 85 mq</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="property-card">
+                <img src="https://images.unsplash.com/photo-1600596542815-e32c0ee32534?auto=format&fit=crop&w=600&q=80" alt="Villa Lusso" class="card-image">
+                <div class="card-details">
+                    <div class="price">€ 2.500 / mese</div>
+                    <h3 class="title">Villa con Giardino Privato</h3>
+                    <p class="location">📍 Firenze, Colline</p>
+                    <div class="features">
+                        <span>🛏 4 Camere</span>
+                        <span>🚿 3 Bagni</span>
+                        <span>📐 220 mq</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="property-card">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" alt="Loft" class="card-image">
+                <div class="card-details">
+                    <div class="price">€ 950 / mese</div>
+                    <h3 class="title">Loft Open Space</h3>
+                    <p class="location">📍 Roma, Trastevere</p>
+                    <div class="features">
+                        <span>🛏 1 Camera</span>
+                        <span>🚿 1 Bagno</span>
+                        <span>📐 60 mq</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="property-card">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Casa Vacanze" class="card-image">
+                <div class="card-details">
+                    <div class="price">€ 1.800 / mese</div>
+                    <h3 class="title">Attico Vista Mare</h3>
+                    <p class="location">📍 Napoli, Posillipo</p>
+                    <div class="features">
+                        <span>🛏 3 Camere</span>
+                        <span>🚿 2 Bagni</span>
+                        <span>📐 130 mq</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 TrovaCasa Italia. Tutti i diritti riservati.</p>
+    </footer>
+
+</body>
+</html>
