@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordina Cibo - Demo</title>
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --dark: #212121;
+            --grey: #757575;
+            --light: #FAFAFA;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: sans-serif; /* استفاده از فونت سیستم برای اطمینان */
+            margin: 0;
+            padding: 0;
+            background-color: #eee;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 90px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        /* هدر */
+        header {
+            background: var(--white);
+            color: var(--primary);
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #ddd;
+            display: none; /* توسط JS کنترل می‌شود */
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+       
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* صفحه اول */
+        #page-landing {
+            background-color: var(--primary);
+            height: 100vh;
+            padding-top: 60px;
+            color: white;
+            text-align: center;
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            z-index: 500;
+            box-sizing: border-box;
+        }
+
+        .logo-box {
+            background: white;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        .mode-btn {
+            background: white;
+            color: var(--primary);
+            width: 80%;
+            padding: 15px;
+            margin: 10px auto;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+        }
+
+        /* آیتم‌های منو */
+        .category-title {
+            color: var(--primary);
+            border-bottom: 2px solid #eee;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        /* نوار پایین */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 480px;
+            margin: auto;
+            border-top: 1px solid #ccc;
+            z-index: 999;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .action-btn:disabled { background: #ccc; }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+   
+    <header id="main-header">Sandwich Bomb 🇮🇹</header>
+
+    <div id="page-landing" class="page active">
+        <div class="logo-box">🍔</div>
+        <h1>Benvenuti!</h1>
+        <p>Ordina il cibo online</p>
+        <br>
+        <button class="mode-btn" onclick="setMode('dine-in')">🍽️ Al Tavolo </button>
+        <button class="mode-btn" onclick="setMode('takeaway')">🛍️ Da Asporto </button>
+    </div>
+
+    <div id="page-menu" class="page">
+        <h3 class="category-title">Panini</h3>
+        <div class="menu-item">
+            <div>
+                <b>Doppio Burger</b><br>
+                <small>€ 12,00</small>
+            </div>
+            <button class="add-btn" onclick="addToCart('Doppio Burger', 12)">+</button>
+        </div>
+        <div class="menu-item">
+            <div>
+                <b>Hot Dog</b><br>
+                <small>€ 8,50</small>
+            </div>
+            <button class="add-btn" onclick="addToCart('Hot Dog', 8.5)">+</button>
+        </div>
+
+        <h3 class="category-title">Pizza</h3>
+        <div class="menu-item">
+            <div>
+                <b>Pizza Margherita</b><br>
+                <small>€ 9,00</small>
+            </div>
+            <button class="add-btn" onclick="addToCart('Pizza Margherita', 9)">+</button>
+        </div>
+
+        <div class="bottom-bar" id="menu-footer">
+            <span id="total-price">€ 0,00</span>
+            <button class="action-btn" id="btn-cart" disabled onclick="goToCheckout()">Carrello</button>
+        </div>
+    </div>
+
+    <div id="page-checkout" class="page">
+        <h2 style="text-align: center; color: var(--primary);">Riepilogo</h2>
+        <div id="cart-list" style="background: #f9f9f9; padding: 10px; border-radius: 10px; margin-bottom: 20px;"></div>
+
+        <div id="table-section" class="hidden">
+            <label>Numero Tavolo :</label>
+            <input type="number" id="table-num" placeholder="10">
+        </div>
+        <div style="margin-top: 15px;">
+            <label>Note:</label>
+            <input type="text" placeholder="...">
+        </div>
+
+        <br>
+        <button class="action-btn" style="width: 100%" onclick="finishOrder()">Conferma</button>
+        <button onclick="showPage('page-menu')" style="width: 100%; margin-top: 10px; background:none; border:none; color:#666; cursor:pointer;">Indietro</button>
+    </div>
+
+    <div id="page-success" class="page" style="text-align: center; padding-top: 50px;">
+        <div style="font-size: 60px;">✅</div>
+        <h2>Grazie!</h2>
+        <p>Il tuo codice ordine:</p>
+        <div id="order-code" style="font-size: 40px; font-weight: bold; color: var(--primary); margin: 20px 0;">---</div>
+        <p id="final-msg"></p>
+        <button class="action-btn" onclick="location.reload()">Home</button>
+    </div>
+
+</div>
+
+<script>
+    let cart = [];
+    let mode = '';
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        
+        // کنترل نمایش هدر
+        const header = document.getElementById('main-header');
+        if(id === 'page-landing') header.style.display = 'none';
+        else header.style.display = 'block';
+
+        // کنترل نمایش فوتر
+        const footer = document.getElementById('menu-footer');
+        if(id === 'page-menu') footer.style.display = 'flex';
+        else footer.style.display = 'none';
+    }
+
+    function setMode(m) {
+        mode = m;
+        showPage('page-menu');
+    }
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        updateCart();
+    }
+
+    function updateCart() {
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        document.getElementById('total-price').innerText = '€ ' + total.toFixed(2);
+        
+        const btn = document.getElementById('btn-cart');
+        btn.disabled = cart.length === 0;
+        btn.innerText = `Carrello (${cart.length})`;
+    }
+
+    function goToCheckout() {
+        showPage('page-checkout');
+        const list = document.getElementById('cart-list');
+        list.innerHTML = cart.map(i => `<div style="border-bottom:1px solid #eee; padding:5px;">${i.name} - €${i.price}</div>`).join('');
+        
+        if(mode === 'dine-in') document.getElementById('table-section').classList.remove('hidden');
+        else document.getElementById('table-section').classList.add('hidden');
+    }
+
+    function finishOrder() {
+        const tableNum = document.getElementById('table-num').value;
+        if(mode === 'dine-in' && !tableNum) {
+            alert('Inserisci il numero del tavolo');
+            return;
+        }
+
+        const code = (mode === 'dine-in' ? 'T' : 'A') + '-' + Math.floor(Math.random() * 1000);
+        document.getElementById('order-code').innerText = code;
+        
+        const msg = mode === 'dine-in' ? 
+            "Attendi al tavolo." : 
+            "Vai alla cassa.";
+        document.getElementById('final-msg').innerText = msg;
+
+        showPage('page-success');
+    }
+</script>
+
+</body>
+</html>
