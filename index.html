@@ -81,7 +81,6 @@
        
         /* --- تنظیمات فونت تیترها --- */
         .title {
-            /* همیشه از فونت انگلیسی استفاده کن چون متن همیشه انگلیسی است */
             font-family: 'Indie Flower', cursive;
             font-size: 5rem;
             color: var(--pastel-blue);
@@ -93,7 +92,6 @@
         }
 
         .section-title {
-            /* همیشه از فونت انگلیسی استفاده کن چون متن همیشه انگلیسی است */
             font-family: 'Patrick Hand', cursive;
             font-size: 2.2rem;
             color: var(--text-color);
@@ -140,7 +138,6 @@
 
         .content-page { padding-top: 45px; }
        
-        /* فونت توضیحات برای فارسی لاله زار و برای انگلیسی پاتریک */
         .desc-text {
             color: #636e72;
             text-align: center;
@@ -168,6 +165,8 @@
         html[dir="ltr"] .btn-icon { margin-left: 0; margin-right: 10px; }
         html[dir="rtl"] .btn-icon { margin-left: 10px; margin-right: 0; }
 
+        /* رنگ دکمه‌ها */
+        .btn-genova { background-color: var(--pastel-mint); color: #555; } /* استایل دکمه جدید */
         .btn-home { background-color: #ffb7b2; }
         .btn-sand1 { background-color: #ffda79; color: #555; }
         .btn-sand2 { background-color: #ff9f43; }
@@ -234,6 +233,10 @@
             </p>
 
             <div class="links-container">
+                <a href="https://parisagh.github.io/latelier-site/" class="pastel-btn btn-genova">
+                    <span class="btn-icon">✂️</span> <span id="txt-genova">آرایشگاه جنوا ۱</span>
+                </a>
+
                 <a href="https://parisagh.github.io/dreanloop/house.html" class="pastel-btn btn-home">
                     <span class="btn-icon">🏠</span> <span id="txt-realestate">املاکی</span>
                 </a>
@@ -273,9 +276,10 @@
     <script>
         const translations = {
             fa: {
-                title: "Port<br>folio", // تغییر به انگلیسی
-                sectionTitle: "✨ Our Designs ✨", // تغییر به انگلیسی
+                title: "Port<br>folio",
+                sectionTitle: "✨ Our Designs ✨",
                 desc: "دنیای رنگی ما رو ببینید",
+                genova: "آرایشگاه جنوا ۱", // متن فارسی دکمه جدید
                 realestate: "املاکی",
                 sand1: "ساندویچی ۱",
                 sand2: "ساندویچی ۲",
@@ -288,6 +292,7 @@
                 title: "Port<br>folio",
                 sectionTitle: "✨ Our Designs ✨",
                 desc: "See our colorful world",
+                genova: "Genova Salon 1", // متن انگلیسی دکمه جدید
                 realestate: "Real Estate",
                 sand1: "Sandwich Shop 1",
                 sand2: "Sandwich Shop 2",
@@ -300,6 +305,7 @@
                 title: "Porta<br>foglio",
                 sectionTitle: "✨ I Nostri Design ✨",
                 desc: "Guarda il nostro mondo colorato",
+                genova: "Parrucchiere Genova 1", // متن ایتالیایی دکمه جدید
                 realestate: "Immobiliare",
                 sand1: "Paninoteca 1",
                 sand2: "Paninoteca 2",
@@ -316,6 +322,7 @@
             document.getElementById('txt-title').innerHTML = data.title;
             document.getElementById('txt-section-title').innerText = data.sectionTitle;
             document.getElementById('txt-desc').innerText = data.desc;
+            document.getElementById('txt-genova').innerText = data.genova; // آپدیت دکمه جدید
             document.getElementById('txt-realestate').innerText = data.realestate;
             document.getElementById('txt-sand1').innerText = data.sand1;
             document.getElementById('txt-sand2').innerText = data.sand2;
@@ -356,5 +363,3 @@
 
 </body>
 </html>
-
-
